@@ -1,0 +1,43 @@
+
+##K-Means Clustering for Grouping Students##
+
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+#Select the features for clustering
+features = ['Math_Score', 'Science_Score', 'Weekly_Math_Hours', 'Weekly_Sci_Hours']
+X = df[features]
+
+#Scale the features
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+#Apply K-Means clustering
+# Let's start with 3 clusters. You can experiment with different numbers of clusters.
+k_means = KMeans(n_clusters=3, random_state=42, n_init=10) # n_init is set to 'auto' or an integer for robustness
+df['Cluster'] = k_means.fit_predict(X_scaled)
+
+print("Cluster assignments added to the DataFrame:")
+display(df.head())
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+##Visualize the Clusters##
+plt.figure(figsize=(10, 6))
+sns.scatterplot(x='Math_Score', y='Science_Score', hue='Cluster', data=df, palette='viridis', s=100)
+plt.title('Student Clusters based on Math and Science Scores')
+plt.xlabel('Math Score')
+plt.ylabel('Science Score')
+plt.grid(True)
+plt.show()
+
+plt.figure(figsize=(10, 6))
+sns.scatterplot(x='Weekly_Math_Hours', y='Weekly_Sci_Hours', hue='Cluster', data=df, palette='viridis', s=100)
+plt.title('Student Clusters based on Weekly Math and Science Hours')
+plt.xlabel('Weekly Math Hours')
+plt.ylabel('Weekly Science Hours')
+plt.grid(True)
+plt.show()
